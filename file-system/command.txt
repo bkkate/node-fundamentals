@@ -1,1 +1,1 @@
-hello? e? THEHECK
+add to file text.txt this content: Hello world!
