@@ -11,6 +11,7 @@ class FileWriteStream extends Writable {
 
     this.fileName = fileName;
     this.fd = null;
+    
     this.chunks = [];
     this.chunksSize = 0;
     this.writesCount = 0;
