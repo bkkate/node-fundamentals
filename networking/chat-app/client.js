@@ -27,6 +27,8 @@ const moveCursor = (dx, dy) => {
   });
 };
 
+let id;
+
 // returns a net.Socket class
 const socket = net.createConnection({ host: "127.0.0.1", port: 3008 }, () => {
   console.log("Connected to the server!");
@@ -38,8 +40,8 @@ const socket = net.createConnection({ host: "127.0.0.1", port: 3008 }, () => {
     await moveCursor(0, -1);
     // clear the current line that the cursor is in
     await clearLine(0);
-    //sending the message to the server as 'data'
-    socket.write(message);
+    //sending the message to the server, which would receive it as 'data'
+    socket.write(`${id}-message-${message}`);
   };
 
   ask();
@@ -49,8 +51,16 @@ const socket = net.createConnection({ host: "127.0.0.1", port: 3008 }, () => {
     console.log(); // log an empty line
     await moveCursor(0, -1); // move the cursor up to the "Enter a message>"
     await clearLine(0); // clear the typed in message
-    console.log(data.toString("utf-8"));
 
+    if (data.toString("utf-8").substring(0, 2) === "id") { // ex) id-5
+      // when we are getting the id of the user that server makes & sends over
+      id = data.toString("utf-8").substring(3);
+      console.log(`Your ID is ${id}!\n`);
+    } else {
+      // when we are getting a message
+    console.log(data.toString("utf-8"));
+    }
+   
     ask();
   });
 });
